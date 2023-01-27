@@ -11,20 +11,22 @@
 
 (** {1 Minimal definition}*)
 
-module type WITH_JOIN = sig
+module type WITH_BOTTOM = sig
   type t
   (** The type held by the [Bounded_join_semilattice] *)
-
-  include Join_semilattice.WITH_JOIN with type t := t
-  (** @inline *)
 
   val bottom : t
   (** The bottom value represent the least element of the join semilattice *)
 end
 
+module type WITH_JOIN_AND_BOTTOM = sig
+  include WITH_BOTTOM
+  include Join_semilattice.WITH_JOIN with type t := t
+end
+
 (** {1 Structure anatomy} *)
 
-module type CORE = WITH_JOIN
+module type CORE = WITH_JOIN_AND_BOTTOM
 (** Basis operations *)
 
 (** Infix operators. *)

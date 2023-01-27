@@ -1,16 +1,11 @@
 module type LAWS = sig
-  module Bounded_join_semilattice : Preface_specs.BOUNDED_JOIN_SEMILATTICE
+  type t
 
-  include
-    Join_semilattice.LAWS
-      with module Join_semilattice := Bounded_join_semilattice
-
-  val bounded_join_semilattice_1 :
-    unit -> (Bounded_join_semilattice.t, Bounded_join_semilattice.t) Law.t
+  val bounded_join_semilattice_1 : unit -> (t, t) Law.t
 end
 
 module For (L : Preface_specs.BOUNDED_JOIN_SEMILATTICE) :
-  LAWS with module Bounded_join_semilattice := L = struct
+  LAWS with type t := L.t = struct
   open Law
   include Join_semilattice.For (L)
 
